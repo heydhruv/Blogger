@@ -20,18 +20,15 @@ function PostForm({post}) {
     const submit = async (data) => {
         try {
             if (post) {
-                debugger
                 const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null;
                 if (file) {
                     await appwriteService.deleteFile(post.featuredImage); // Assuming deleteFile is asynchronous and returns a promise
                 }
-                debugger
                 const dbPost = await appwriteService.updatePost(post.$id, {...data, featuredImage: file ? file.$id : undefined});
                 if (dbPost) {
                     navigate(`/post/${dbPost.$id}`);
                 }
             } else {
-                debugger
                 const file = await appwriteService.uploadFile(data.image[0]);
                 if (file) {
                     const fileId = file.$id;
